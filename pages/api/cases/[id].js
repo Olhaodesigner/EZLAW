@@ -9,9 +9,10 @@ export default async function handler(req, res) {
     supabase = getSupabaseClient();
   } catch (err) {
     console.error('Erro ao iniciar Supabase:', err);
-    return res
-      .status(500)
-      .json({ error: 'Erro interno na configuração do Supabase.' });
+    return res.status(500).json({
+      error: 'Erro interno na configuração do Supabase.',
+      detail: err.message || String(err)
+    });
   }
 
   if (req.method === 'PATCH') {
@@ -31,17 +32,19 @@ export default async function handler(req, res) {
 
       if (error) {
         console.error('Supabase PATCH /cases/[id]:', error);
-        return res
-          .status(500)
-          .json({ error: 'Erro ao atualizar status no banco de dados.' });
+        return res.status(500).json({
+          error: 'Erro ao atualizar status no banco de dados.',
+          detail: error.message || error.code || error
+        });
       }
 
       return res.status(200).json(data);
     } catch (err) {
       console.error('Erro inesperado PATCH /cases/[id]:', err);
-      return res
-        .status(500)
-        .json({ error: 'Erro inesperado ao atualizar status.' });
+      return res.status(500).json({
+        error: 'Erro inesperado ao atualizar status.',
+        detail: err.message || String(err)
+      });
     }
   }
 
