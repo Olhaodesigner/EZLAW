@@ -5,6 +5,7 @@ export default async function handler(req, res) {
   const { id } = req.query;
   let supabase;
 
+  // Inicializa Supabase
   try {
     supabase = getSupabaseClient();
   } catch (err) {
