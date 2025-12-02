@@ -4,14 +4,14 @@ import { getSupabaseClient } from '../../../lib/supabase';
 export default async function handler(req, res) {
   let supabase;
 
-  // Tenta inicializar o Supabase e captura erro de env/configuração
   try {
     supabase = getSupabaseClient();
   } catch (err) {
     console.error('Erro ao iniciar Supabase:', err);
-    return res
-      .status(500)
-      .json({ error: 'Erro interno na configuração do Supabase.' });
+    return res.status(500).json({
+      error: 'Erro interno na configuração do Supabase.',
+      detail: err.message || String(err)
+    });
   }
 
   if (req.method === 'GET') {
@@ -23,17 +23,19 @@ export default async function handler(req, res) {
 
       if (error) {
         console.error('Supabase GET /cases:', error);
-        return res
-          .status(500)
-          .json({ error: 'Erro ao buscar casos no banco de dados.' });
+        return res.status(500).json({
+          error: 'Erro ao buscar casos no banco de dados.',
+          detail: error.message || error.code || error
+        });
       }
 
       return res.status(200).json(data || []);
     } catch (err) {
       console.error('Erro inesperado GET /cases:', err);
-      return res
-        .status(500)
-        .json({ error: 'Erro inesperado ao buscar casos.' });
+      return res.status(500).json({
+        error: 'Erro inesperado ao buscar casos.',
+        detail: err.message || String(err)
+      });
     }
   }
 
@@ -42,9 +44,10 @@ export default async function handler(req, res) {
       const { client_name, email, phone, area, summary } = req.body;
 
       if (!client_name || !email || !phone || !area || !summary) {
-        return res
-          .status(400)
-          .json({ error: 'Campos obrigatórios faltando.' });
+        return res.status(400).json({
+          error: 'Campos obrigatórios faltando.',
+          detail: { client_name, email, phone, area, summary }
+        });
       }
 
       const { data, error } = await supabase
@@ -62,17 +65,19 @@ export default async function handler(req, res) {
 
       if (error) {
         console.error('Supabase POST /cases:', error);
-        return res
-          .status(500)
-          .json({ error: 'Erro ao criar caso no banco de dados.' });
+        return res.status(500).json({
+          error: 'Erro ao criar caso no banco de dados.',
+          detail: error.message || error.code || error
+        });
       }
 
       return res.status(201).json(data);
     } catch (err) {
       console.error('Erro inesperado POST /cases:', err);
-      return res
-        .status(500)
-        .json({ error: 'Erro inesperado ao criar caso.' });
+      return res.status(500).json({
+        error: 'Erro inesperado ao criar caso.',
+        detail: err.message || String(err)
+      });
     }
   }
 
