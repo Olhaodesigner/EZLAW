@@ -2,49 +2,79 @@
 import { getSupabaseClient } from '../../../lib/supabase';
 
 export default async function handler(req, res) {
-  const supabase = getSupabaseClient();
+  let supabase;
+
+  // Tenta inicializar o Supabase e captura erro de env/configuração
+  try {
+    supabase = getSupabaseClient();
+  } catch (err) {
+    console.error('Erro ao iniciar Supabase:', err);
+    return res
+      .status(500)
+      .json({ error: 'Erro interno na configuração do Supabase.' });
+  }
 
   if (req.method === 'GET') {
-    const { data, error } = await supabase
-      .from('cases')
-      .select('*')
-      .order('created_at', { ascending: false });
+    try {
+      const { data, error } = await supabase
+        .from('cases')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-    if (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Erro ao buscar casos' });
+      if (error) {
+        console.error('Supabase GET /cases:', error);
+        return res
+          .status(500)
+          .json({ error: 'Erro ao buscar casos no banco de dados.' });
+      }
+
+      return res.status(200).json(data || []);
+    } catch (err) {
+      console.error('Erro inesperado GET /cases:', err);
+      return res
+        .status(500)
+        .json({ error: 'Erro inesperado ao buscar casos.' });
     }
-
-    return res.status(200).json(data || []);
   }
 
   if (req.method === 'POST') {
-    const { client_name, email, phone, area, summary } = req.body;
+    try {
+      const { client_name, email, phone, area, summary } = req.body;
 
-    if (!client_name || !email || !phone || !area || !summary) {
-      return res.status(400).json({ error: 'Campos obrigatórios faltando' });
+      if (!client_name || !email || !phone || !area || !summary) {
+        return res
+          .status(400)
+          .json({ error: 'Campos obrigatórios faltando.' });
+      }
+
+      const { data, error } = await supabase
+        .from('cases')
+        .insert({
+          client_name,
+          email,
+          phone,
+          area,
+          summary,
+          status: 'CONTRATO_FECHADO'
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Supabase POST /cases:', error);
+        return res
+          .status(500)
+          .json({ error: 'Erro ao criar caso no banco de dados.' });
+      }
+
+      return res.status(201).json(data);
+    } catch (err) {
+      console.error('Erro inesperado POST /cases:', err);
+      return res
+        .status(500)
+        .json({ error: 'Erro inesperado ao criar caso.' });
     }
-
-    const { data, error } = await supabase
-      .from('cases')
-      .insert({
-        client_name,
-        email,
-        phone,
-        area,
-        summary,
-        status: 'CONTRATO_FECHADO'
-      })
-      .select()
-      .single();
-
-    if (error) {
-      console.error(error);
-      return res.status(500).json({ error: 'Erro ao criar caso' });
-    }
-
-    return res.status(201).json(data);
   }
 
-  return res.status(405).json({ error: 'Método não permitido' });
+  return res.status(405).json({ error: 'Método não permitido.' });
 }
