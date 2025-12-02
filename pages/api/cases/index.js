@@ -4,6 +4,7 @@ import { getSupabaseClient } from '../../../lib/supabase';
 export default async function handler(req, res) {
   let supabase;
 
+  // Inicializa Supabase
   try {
     supabase = getSupabaseClient();
   } catch (err) {
@@ -14,6 +15,7 @@ export default async function handler(req, res) {
     });
   }
 
+  // GET /api/cases -> lista casos
   if (req.method === 'GET') {
     try {
       const { data, error } = await supabase
@@ -39,6 +41,7 @@ export default async function handler(req, res) {
     }
   }
 
+  // POST /api/cases -> cria caso
   if (req.method === 'POST') {
     try {
       const { client_name, email, phone, area, summary } = req.body;
