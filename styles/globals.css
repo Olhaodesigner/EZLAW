@@ -98,4 +98,172 @@ body {
 }
 
 @media (max-width: 900px) {
-  .fo
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+}
+
+.form-label span {
+  color: #9ca3af;
+}
+
+.input,
+.textarea,
+.select {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #6b7280;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.4);
+  background: rgba(15, 23, 42, 1);
+}
+
+.textarea {
+  border-radius: 18px;
+  min-height: 110px;
+  resize: vertical;
+}
+
+/* Botões */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(120deg, #6366f1, #a855f7, #ec4899);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.8);
+  opacity: 0.96;
+}
+
+/* Tabela */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 0.75rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.table thead tr {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.table th,
+.table td {
+  padding: 0.6rem 0.55rem;
+  border-bottom: 1px solid rgba(30, 64, 175, 0.35);
+  vertical-align: top;
+}
+
+.table th {
+  text-align: left;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background: rgba(15, 23, 42, 0.85);
+}
+
+/* Status pill */
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-CONTRATO_FECHADO {
+  background: rgba(22, 163, 74, 0.18);
+  color: #4ade80;
+}
+
+.status-EM_ANALISE {
+  background: rgba(234, 179, 8, 0.2);
+  color: #facc15;
+}
+
+.status-AGUARDANDO_DOC {
+  background: rgba(59, 130, 246, 0.18);
+  color: #60a5fa;
+}
+
+.status-AJUIZADO {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c4b5fd;
+}
+
+.status-ENCERRADO {
+  background: rgba(148, 163, 184, 0.25);
+  color: #e5e7eb;
+}
+
+/* Mensagens */
+
+.muted {
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+.error-text {
+  color: #f87171;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
