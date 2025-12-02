@@ -9,6 +9,18 @@ const STATUS_OPTIONS = [
   { value: 'ENCERRADO', label: 'Encerrado' }
 ];
 
+const AREA_OPTIONS = [
+  'Previdenciário',
+  'Trabalhista',
+  'Cível',
+  'Família e Sucessões',
+  'Consumidor',
+  'Empresarial',
+  'Tributário',
+  'Penal',
+  'Outros'
+];
+
 export default function AdminPage() {
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +29,7 @@ export default function AdminPage() {
     client_name: '',
     email: '',
     phone: '',
-    area: '',
+    area: AREA_OPTIONS[0],
     summary: ''
   });
 
@@ -60,7 +72,7 @@ export default function AdminPage() {
         client_name: '',
         email: '',
         phone: '',
-        area: '',
+        area: AREA_OPTIONS[0],
         summary: ''
       });
       await loadCases();
@@ -144,14 +156,19 @@ export default function AdminPage() {
               </label>
 
               <label className="form-label">
-                <span>Área</span>
-                <input
-                  className="input"
-                  placeholder="Previdenciário, Trabalhista..."
+                <span>Área de atuação</span>
+                <select
+                  className="select"
                   value={form.area}
                   onChange={e => setForm({ ...form, area: e.target.value })}
                   required
-                />
+                >
+                  {AREA_OPTIONS.map(area => (
+                    <option key={area} value={area}>
+                      {area}
+                    </option>
+                  ))}
+                </select>
               </label>
             </div>
 
@@ -228,10 +245,7 @@ export default function AdminPage() {
                             ))}
                           </select>
                           <span className={`status-pill status-${c.status}`}>
-                            {
-                              STATUS_OPTIONS.find(opt => opt.value === c.status)?.label ||
-                              c.status
-                            }
+                            {STATUS_OPTIONS.find(opt => opt.value === c.status)?.label || c.status}
                           </span>
                         </div>
                       </td>
