@@ -3,44 +3,25 @@ import Link from 'next/link';
 
 export default function HomePage() {
   return (
-    <main
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: '#050816',
-        color: '#f9fafb',
-        padding: '1rem'
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 480,
-          background: '#0b1020',
-          padding: '2rem',
-          borderRadius: 16,
-          boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
-        }}
-      >
-        <h1 style={{ marginTop: 0, marginBottom: '0.5rem' }}>EZLAW • Admin</h1>
-        <p style={{ marginTop: 0, marginBottom: '1.5rem', color: '#9ca3af' }}>
-          Painel administrativo para gerenciar apenas os casos com contrato fechado.
-        </p>
-        <Link
-          href="/admin"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '0.6rem 1.4rem',
-            borderRadius: 999,
-            background: '#6c5ce7',
-            fontWeight: 600
-          }}
-        >
-          Acessar painel do administrador
-        </Link>
+    <main className="page">
+      <div className="shell">
+        <div className="card" style={{ maxWidth: 480, margin: '4rem auto' }}>
+          <h1 className="app-title">
+            <span>EZLAW</span> • Admin
+          </h1>
+          <p className="app-subtitle" style={{ marginBottom: '1.5rem' }}>
+            Painel administrativo para gerenciar apenas os casos com contrato fechado.
+          </p>
+
+          <p className="muted" style={{ marginBottom: '1.25rem' }}>
+            Use esta área apenas para cadastrar clientes que já fecharam contrato com você
+            ou com sua equipe. O status será sincronizado futuramente com o app do cliente.
+          </p>
+
+          <Link href="/admin" legacyBehavior>
+            <a className="btn-primary">Acessar painel do administrador</a>
+          </Link>
+        </div>
       </div>
     </main>
   );
